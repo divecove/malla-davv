@@ -1,39 +1,17 @@
 body {
   font-family: Arial, sans-serif;
   background: #f0f8ff;
-  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
   color: #004080;
-}
-
-#cursos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 20px;
-}
-
-.curso {
-  background: #add8e6;
-  margin: 5px;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: grab;
-  width: 200px;
-}
-
-.curso.locked {
-  background: #cccccc;
-  cursor: not-allowed;
-}
-
-.curso.completed {
-  background: #4682b4;
+  text-align: center;
 }
 
 #reset {
+  display: block;
   margin: 10px auto;
   padding: 5px 10px;
   background: #4682b4;
@@ -47,11 +25,45 @@ h1 {
   background: #315f86;
 }
 
+#container {
+  display: flex;
+}
+
+#cursos {
+  width: 250px;
+  background: #e6f2ff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.curso {
+  background: #add8e6; 
+  padding: 10px;
+  border-radius: 4px;
+  cursor: grab;
+}
+
+.curso.completed {
+  background: #4682b4; 
+  color: white;
+}
+
+.curso.locked {
+  background: #cccccc; 
+  cursor: not-allowed;
+}
+
 #malla {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(10, 1fr);
   gap: 10px;
-  margin: 20px;
+  flex: 1;
+  padding: 10px;
+  overflow-x: auto;
 }
 
 .semestre {
