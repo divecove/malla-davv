@@ -4,30 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Curricular Interactiva</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/index.min.js"></script>
 </head>
 <body>
   <h1>Malla Curricular Interactiva</h1>
-  
-  <div class="malla-container">
-    <!-- Semestres 1 al 10 -->
-    <div class="malla">
-      <script>
-        for (let i = 1; i <= 10; i++) {
-          document.write(`<div class="semestre" data-semestre="${i}">
-            <h2>Semestre ${i}</h2>
-            <div class="dropzone" data-semestre="${i}"></div>
-          </div>`);
-        }
-      </script>
-    </div>
+  <button id="reset">Borrar malla guardada</button>
 
-    <!-- Cursos -->
-    <div class="cursos-container">
-      <h2>Cursos</h2>
-      <div id="cursos"></div>
-    </div>
+  <div id="cursos"></div>
+
+  <div id="malla">
+    <div class="semestre dropzone" data-semestre="1"><h3>Semestre 1</h3></div>
+    <div class="semestre dropzone" data-semestre="2"><h3>Semestre 2</h3></div>
+    <div class="semestre dropzone" data-semestre="3"><h3>Semestre 3</h3></div>
+    <div class="semestre dropzone" data-semestre="4"><h3>Semestre 4</h3></div>
+    <div class="semestre dropzone" data-semestre="5"><h3>Semestre 5</h3></div>
+    <div class="semestre dropzone" data-semestre="6"><h3>Semestre 6</h3></div>
+    <div class="semestre dropzone" data-semestre="7"><h3>Semestre 7</h3></div>
+    <div class="semestre dropzone" data-semestre="8"><h3>Semestre 8</h3></div>
+    <div class="semestre dropzone" data-semestre="9"><h3>Semestre 9</h3></div>
+    <div class="semestre dropzone" data-semestre="10"><h3>Semestre 10</h3></div>
   </div>
 
   <script src="script.js"></script>
