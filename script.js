@@ -76,7 +76,6 @@ function renderCursos() {
 
 renderCursos();
 
-// Interact.js drag & drop
 interact('.curso').draggable({
   inertia: true,
   autoScroll: true,
@@ -93,9 +92,11 @@ interact('.curso').draggable({
       target.setAttribute('data-y', y);
     },
     end (event) {
-      event.target.style.transform = 'none';
-      event.target.removeAttribute('data-x');
-      event.target.removeAttribute('data-y');
+      if (!event.target.parentElement.classList.contains('dropzone')) {
+        event.target.style.transform = 'none';
+        event.target.removeAttribute('data-x');
+        event.target.removeAttribute('data-y');
+      }
     }
   }
 });
@@ -106,6 +107,11 @@ interact('.dropzone').dropzone({
   ondrop: function (event) {
     const dropSemestre = parseInt(event.target.dataset.semestre);
     event.target.appendChild(event.relatedTarget);
+    
+    event.relatedTarget.style.transform = "none";
+    event.relatedTarget.removeAttribute('data-x');
+    event.relatedTarget.removeAttribute('data-y');
+    
     event.relatedTarget.classList.add('completed');
     event.relatedTarget.classList.remove('locked');
 
