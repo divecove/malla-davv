@@ -136,10 +136,8 @@ function loadMalla() {
   if (!data) return;
   const malla = JSON.parse(data);
 
-  // Limpia las zonas
   document.querySelectorAll('.dropzone').forEach(dz => dz.innerHTML = `<h3>Semestre ${dz.dataset.semestre}</h3>`);
 
-  // Mueve cursos según localStorage
   Object.keys(malla).forEach(semestre => {
     const dropzone = document.querySelector(`.dropzone[data-semestre="${semestre}"]`);
     malla[semestre].forEach(codigo => {
