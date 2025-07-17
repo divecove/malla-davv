@@ -65,11 +65,8 @@ function renderCursos() {
     div.classList.add('curso');
     div.textContent = `${curso.codigo} - ${curso.nombre} (${curso.creditos} cr)`;
     div.setAttribute('data-curso', curso.codigo);
-    
-    if (curso.prereq.length > 0) {
-      div.classList.add('locked');
-    }
-
+    if (curso.prereq.length > 0 && !curso.aprobado) div.classList.add('locked');
+    if (curso.aprobado) div.classList.add('completed');
     cursosDiv.appendChild(div);
   });
 }
@@ -83,10 +80,8 @@ interact('.curso').draggable({
     move (event) {
       const target = event.target;
       if (target.classList.contains('locked')) return;
-
       const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
       const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
       target.style.transform = `translate(${x}px, ${y}px)`;
       target.setAttribute('data-x', x);
       target.setAttribute('data-y', y);
@@ -106,17 +101,23 @@ interact('.dropzone').dropzone({
   overlap: 0.75,
   ondrop: function (event) {
     const dropSemestre = parseInt(event.target.dataset.semestre);
+
     event.target.appendChild(event.relatedTarget);
-    
     event.relatedTarget.style.transform = "none";
     event.relatedTarget.removeAttribute('data-x');
     event.relatedTarget.removeAttribute('data-y');
-    
+
+    const codigo = event.relatedTarget.getAttribute('data-curso');
+
+    const curso = cursos.find(c => c.codigo === codigo);
+    if (curso) curso.aprobado = true;
+
     event.relatedTarget.classList.add('completed');
     event.relatedTarget.classList.remove('locked');
 
-    const codigo = event.relatedTarget.getAttribute('data-curso');
     desbloquearCursos(codigo, dropSemestre);
+
+    saveMalla();
   }
 });
 
@@ -136,3 +137,64 @@ function desbloquearCursos(codigoCumplido, semestreCumplido) {
     }
   });
 }
+
+function saveMalla() {
+  const malla = {
+    semestres: {},
+    aprobados: {}
+  };
+
+  document.querySelectorAll('.dropzone').forEach(drop => {
+    const semestre = drop.dataset.semestre;
+    malla.semestres[semestre] = [];
+    drop.querySelectorAll('.curso').forEach(cursoDiv => {
+      const codigo = cursoDiv.getAttribute('data-curso');
+      malla.semestres[semestre].push(codigo);
+      malla.aprobados[codigo] = true;
+    });
+  });
+
+  localStorage.setItem('malla', JSON.stringify(malla));
+}
+
+function loadMalla() {
+  const data = localStorage.getItem('malla');
+  if (!data) return;
+
+  const malla = JSON.parse(data);
+
+  cursos.forEach(c => c.aprobado = false);
+
+  Object.keys(malla.aprobados).forEach(codigo => {
+    const curso = cursos.find(c => c.codigo === codigo);
+    if (curso) curso.aprobado = true;
+  });
+
+  document.querySelectorAll('.dropzone').forEach(drop => drop.innerHTML = "");
+
+  Object.keys(malla.semestres).forEach(semestre => {
+    const dropzone = document.querySelector(`.dropzone[data-semestre="${semestre}"]`);
+    malla.semestres[semestre].forEach(codigo => {
+      const cursoDiv = document.querySelector(`.curso[data-curso="${codigo}"]`);
+      if (cursoDiv) {
+        dropzone.appendChild(cursoDiv);
+        cursoDiv.classList.add('completed');
+        cursoDiv.classList.remove('locked');
+        cursoDiv.style.transform = "none";
+        cursoDiv.removeAttribute('data-x');
+        cursoDiv.removeAttribute('data-y');
+      }
+    });
+  });
+
+  renderCursos();
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+  localStorage.removeItem('malla');
+  location.reload();
+});
+
+window.onload = () => {
+  loadMalla();
+};
