@@ -63,13 +63,12 @@ function renderCursos() {
   cursos.forEach(curso => {
     const div = document.createElement('div');
     div.classList.add('curso');
-    div.textContent = `${curso.codigo} - ${curso.nombre}`;
+    div.textContent = `${curso.codigo} ${curso.nombre}`;
     div.setAttribute('data-curso', curso.codigo);
     if (curso.prereq.length > 0 && !curso.aprobado) div.classList.add('locked');
     if (curso.aprobado) div.classList.add('completed');
     cursosDiv.appendChild(div);
   });
-
   initInteract();
 }
 
@@ -101,8 +100,6 @@ function initInteract() {
     accept: '.curso:not(.locked)',
     overlap: 0.75,
     ondrop: function (event) {
-      const dropSemestre = parseInt(event.target.dataset.semestre);
-
       event.target.appendChild(event.relatedTarget);
       event.relatedTarget.style.transform = "none";
       event.relatedTarget.removeAttribute('data-x');
@@ -115,40 +112,19 @@ function initInteract() {
       event.relatedTarget.classList.add('completed');
       event.relatedTarget.classList.remove('locked');
 
-      desbloquearCursos(codigo, dropSemestre);
       saveMalla();
     }
   });
 }
 
-function desbloquearCursos(codigoCumplido, semestreCumplido) {
-  cursos.forEach(curso => {
-    if (curso.prereq.includes(codigoCumplido)) {
-      const prereqsCompletos = curso.prereq.every(pr => {
-        const colocado = document.querySelector(`.dropzone .curso[data-curso="${pr}"]`);
-        return colocado;
-      });
-      if (prereqsCompletos) {
-        const cursoDiv = document.querySelector(`.curso[data-curso="${curso.codigo}"]`);
-        if (cursoDiv) cursoDiv.classList.remove('locked');
-      }
-    }
-  });
-}
-
 function saveMalla() {
-  const malla = {
-    semestres: {},
-    aprobados: {}
-  };
+  const malla = {};
 
   document.querySelectorAll('.dropzone').forEach(drop => {
     const semestre = drop.dataset.semestre;
-    malla.semestres[semestre] = [];
+    malla[semestre] = [];
     drop.querySelectorAll('.curso').forEach(cursoDiv => {
-      const codigo = cursoDiv.getAttribute('data-curso');
-      malla.semestres[semestre].push(codigo);
-      malla.aprobados[codigo] = true;
+      malla[semestre].push(cursoDiv.getAttribute('data-curso'));
     });
   });
 
@@ -158,21 +134,15 @@ function saveMalla() {
 function loadMalla() {
   const data = localStorage.getItem('malla');
   if (!data) return;
-
   const malla = JSON.parse(data);
 
-  cursos.forEach(c => c.aprobado = false);
+  // Limpia las zonas
+  document.querySelectorAll('.dropzone').forEach(dz => dz.innerHTML = `<h3>Semestre ${dz.dataset.semestre}</h3>`);
 
-  Object.keys(malla.aprobados).forEach(codigo => {
-    const curso = cursos.find(c => c.codigo === codigo);
-    if (curso) curso.aprobado = true;
-  });
-
-  document.querySelectorAll('.dropzone').forEach(drop => drop.innerHTML = "");
-
-  Object.keys(malla.semestres).forEach(semestre => {
+  // Mueve cursos según localStorage
+  Object.keys(malla).forEach(semestre => {
     const dropzone = document.querySelector(`.dropzone[data-semestre="${semestre}"]`);
-    malla.semestres[semestre].forEach(codigo => {
+    malla[semestre].forEach(codigo => {
       const cursoDiv = document.querySelector(`.curso[data-curso="${codigo}"]`);
       if (cursoDiv) {
         dropzone.appendChild(cursoDiv);
@@ -184,8 +154,6 @@ function loadMalla() {
       }
     });
   });
-
-  renderCursos();
 }
 
 document.getElementById('reset').addEventListener('click', () => {
@@ -194,6 +162,6 @@ document.getElementById('reset').addEventListener('click', () => {
 });
 
 window.onload = () => {
-  loadMalla();
   renderCursos();
+  loadMalla();
 };
