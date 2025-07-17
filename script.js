@@ -69,55 +69,58 @@ function renderCursos() {
     if (curso.aprobado) div.classList.add('completed');
     cursosDiv.appendChild(div);
   });
+
+  // ✅ Inicializar Interact después de renderizar cursos
+  initInteract();
 }
 
-renderCursos();
-
-interact('.curso').draggable({
-  inertia: true,
-  autoScroll: true,
-  listeners: {
-    move (event) {
-      const target = event.target;
-      if (target.classList.contains('locked')) return;
-      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-      target.style.transform = `translate(${x}px, ${y}px)`;
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-    },
-    end (event) {
-      if (!event.target.parentElement.classList.contains('dropzone')) {
-        event.target.style.transform = 'none';
-        event.target.removeAttribute('data-x');
-        event.target.removeAttribute('data-y');
+function initInteract() {
+  interact('.curso').draggable({
+    inertia: true,
+    autoScroll: true,
+    listeners: {
+      move (event) {
+        const target = event.target;
+        if (target.classList.contains('locked')) return;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      },
+      end (event) {
+        if (!event.target.parentElement.classList.contains('dropzone')) {
+          event.target.style.transform = 'none';
+          event.target.removeAttribute('data-x');
+          event.target.removeAttribute('data-y');
+        }
       }
     }
-  }
-});
+  });
 
-interact('.dropzone').dropzone({
-  accept: '.curso:not(.locked)',
-  overlap: 0.75,
-  ondrop: function (event) {
-    const dropSemestre = parseInt(event.target.dataset.semestre);
+  interact('.dropzone').dropzone({
+    accept: '.curso:not(.locked)',
+    overlap: 0.75,
+    ondrop: function (event) {
+      const dropSemestre = parseInt(event.target.dataset.semestre);
 
-    event.target.appendChild(event.relatedTarget);
-    event.relatedTarget.style.transform = "none";
-    event.relatedTarget.removeAttribute('data-x');
-    event.relatedTarget.removeAttribute('data-y');
+      event.target.appendChild(event.relatedTarget);
+      event.relatedTarget.style.transform = "none";
+      event.relatedTarget.removeAttribute('data-x');
+      event.relatedTarget.removeAttribute('data-y');
 
-    const codigo = event.relatedTarget.getAttribute('data-curso');
-    const curso = cursos.find(c => c.codigo === codigo);
-    if (curso) curso.aprobado = true;
+      const codigo = event.relatedTarget.getAttribute('data-curso');
+      const curso = cursos.find(c => c.codigo === codigo);
+      if (curso) curso.aprobado = true;
 
-    event.relatedTarget.classList.add('completed');
-    event.relatedTarget.classList.remove('locked');
+      event.relatedTarget.classList.add('completed');
+      event.relatedTarget.classList.remove('locked');
 
-    desbloquearCursos(codigo, dropSemestre);
-    saveMalla();
-  }
-});
+      desbloquearCursos(codigo, dropSemestre);
+      saveMalla();
+    }
+  });
+}
 
 function desbloquearCursos(codigoCumplido, semestreCumplido) {
   cursos.forEach(curso => {
@@ -193,4 +196,5 @@ document.getElementById('reset').addEventListener('click', () => {
 
 window.onload = () => {
   loadMalla();
+  renderCursos();
 };
