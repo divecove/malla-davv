@@ -70,7 +70,6 @@ function renderCursos() {
     cursosDiv.appendChild(div);
   });
 
-  // ✅ Inicializar Interact después de renderizar cursos
   initInteract();
 }
 
