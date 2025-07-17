@@ -63,7 +63,7 @@ function renderCursos() {
   cursos.forEach(curso => {
     const div = document.createElement('div');
     div.classList.add('curso');
-    div.textContent = `${curso.codigo} - ${curso.nombre} (${curso.creditos} cr)`;
+    div.textContent = `${curso.codigo} - ${curso.nombre}`;
     div.setAttribute('data-curso', curso.codigo);
     if (curso.prereq.length > 0 && !curso.aprobado) div.classList.add('locked');
     if (curso.aprobado) div.classList.add('completed');
@@ -108,7 +108,6 @@ interact('.dropzone').dropzone({
     event.relatedTarget.removeAttribute('data-y');
 
     const codigo = event.relatedTarget.getAttribute('data-curso');
-
     const curso = cursos.find(c => c.codigo === codigo);
     if (curso) curso.aprobado = true;
 
@@ -116,7 +115,6 @@ interact('.dropzone').dropzone({
     event.relatedTarget.classList.remove('locked');
 
     desbloquearCursos(codigo, dropSemestre);
-
     saveMalla();
   }
 });
@@ -126,9 +124,7 @@ function desbloquearCursos(codigoCumplido, semestreCumplido) {
     if (curso.prereq.includes(codigoCumplido)) {
       const prereqsCompletos = curso.prereq.every(pr => {
         const colocado = document.querySelector(`.dropzone .curso[data-curso="${pr}"]`);
-        if (!colocado) return false;
-        const semestre = parseInt(colocado.closest('.dropzone').dataset.semestre);
-        return semestre <= semestreCumplido;
+        return colocado;
       });
       if (prereqsCompletos) {
         const cursoDiv = document.querySelector(`.curso[data-curso="${curso.codigo}"]`);
