@@ -164,3 +164,10 @@ p {
     background-color: var(--color-approved);
     color: var(--color-approved-text);
 }
+
+.course-grade {
+  width: 50px;
+  font-size: 0.8em;
+  margin-top: 5px;
+  display: block;
+}
