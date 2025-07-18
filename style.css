@@ -59,24 +59,25 @@ p {
 }
 
 /* --- Estilos de Curso Individual --- */
+/* ▼▼ REGLAS MODIFICADAS ▼▼ */
 .course {
-    padding: 10px 15px;
+    position: relative; /* Necesario para posicionar la nota de forma absoluta */
+    padding: 10px;
+    min-height: 65px; /* Asegura altura suficiente para el contenido */
     border-radius: 8px;
     cursor: grab;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.2s;
-    width: auto;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: var(--color-available);
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
 }
+
+.course-details {
+    padding-right: 70px; /* Deja espacio a la derecha para que la nota no se superponga */
+}
+/* ▲▲ FIN DE REGLAS MODIFICADAS ▲▲ */
 
 .course:active { cursor: grabbing; }
 
-.course-info { flex-basis: 70%; }
-.course-grade-wrapper { flex-basis: 25%; text-align: center; }
 .course-code { font-weight: bold; font-size: 0.9em; display: block; }
 .course-name { font-size: 0.85em; margin: 4px 0; display: block; }
 .course-credits { font-size: 0.8em; font-style: italic; display: block; text-align: left; }
@@ -88,7 +89,7 @@ p {
     cursor: not-allowed;
     pointer-events: none;
 }
-.course.locked .course-info { pointer-events: auto; }
+.course.locked .course-details { pointer-events: auto; }
 .course.approved {
     background-color: var(--color-approved);
     color: var(--color-approved-text);
@@ -145,6 +146,13 @@ p {
 }
 
 /* --- Input de nota --- */
+/* ▼▼ REGLAS MODIFICADAS ▼▼ */
+.course-grade-wrapper {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+}
+
 .course-grade {
     width: 60px;
     font-family: inherit;
@@ -159,6 +167,8 @@ p {
     transition: border-color 0.3s;
     -moz-appearance: textfield;
 }
+/* ▲▲ FIN DE REGLAS MODIFICADAS ▲▲ */
+
 .course-grade::placeholder { color: #999; font-style: italic; font-size: 0.9em; }
 .course-grade:focus { border-bottom: 1px solid var(--color-approved); }
 .course-grade::-webkit-outer-spin-button,
