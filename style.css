@@ -5,7 +5,7 @@
     --color-header: #003366; /* Azul oscuro para títulos */
     --color-text: #333333;
     --color-available: #b3d9ff; /* Celeste para cursos disponibles */
-    --color-approved: #3385ff; /* Azul más oscuro para cursos aprobados */
+    --color-approved: #989FCE; /* Azul más oscuro para cursos aprobados */
     --color-approved-text: #ffffff;
     --color-locked: #e0e0e0; /* Gris para cursos bloqueados */
     --color-locked-text: #888888;
@@ -176,7 +176,7 @@ p {
 /* --- Input de nota --- */
 .course-grade-wrapper {
     flex-basis: 30%;
-    text-align: right;
+    text-align: left;
 }
 .course-grade {
     width: 60px;
@@ -184,7 +184,7 @@ p {
     font-size: 0.9em;
     padding: 2px 4px;
     border: none;
-    border-bottom: 1px solid var(--color-header);
+    border-bottom: none;
     background-color: transparent;
     color: var(--color-text);
     text-align: center;
