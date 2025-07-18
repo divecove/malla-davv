@@ -166,7 +166,7 @@ p {
     border-bottom: none;
     background-color: transparent;
     color: var(--color-text);
-    font-style: italic;
+    font-style: bold;
     text-align: center;
     outline: none;
     transition: border-color 0.3s;
@@ -175,7 +175,7 @@ p {
 /* ▲▲ FIN DE REGLAS MODIFICADAS ▲▲ */
 
 .course-grade::placeholder { color: #999; font-style: italic; font-size: 0.9em; }
-.course-grade:focus { border-bottom: 1px solid var(--color-approved); }
+.course-grade:focus { border-bottom: none; }
 .course-grade::-webkit-outer-spin-button,
 .course-grade::-webkit-inner-spin-button {
   -webkit-appearance: none;
