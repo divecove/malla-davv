@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   enableDragAndDrop();
+  updateCourseLockStates();
+  loadState();
 
   function enableDragAndDrop() {
     const courses = document.querySelectorAll('.course');
@@ -133,10 +135,49 @@ document.addEventListener('DOMContentLoaded', () => {
         const courseEl = document.getElementById(courseId);
         if (courseEl) {
           zone.appendChild(courseEl);
-          courseEl.classList.toggle('approved', zone.classList.contains('semester-column'));
+          const isApproved = zone.classList.contains('semester-column');
+          courseEl.classList.toggle('approved', isApproved);
+
+          if (isApproved && !courseEl.querySelector('.course-grade')) {
+            const gradeInput = document.createElement('input');
+            gradeInput.type = 'number';
+            gradeInput.min = 1;
+            gradeInput.max = 7;
+            gradeInput.step = 0.1;
+            gradeInput.placeholder = 'Nota';
+            gradeInput.classList.add('course-grade');
+
+            gradeInput.addEventListener('change', () => saveState());
+
+            courseEl.appendChild(gradeInput);
+          }
+
+          if (!isApproved) {
+            const existingInput = courseEl.querySelector('.course-grade');
+            if (existingInput) existingInput.remove();
+          }
+
           saveState();
         }
       });
+    });
+  }
+
+  function updateCourseLockStates() {
+    const approvedCourses = new Set();
+
+    document.querySelectorAll('.semester-column .course').forEach(c => {
+      approvedCourses.add(c.dataset.code);
+    });
+
+    document.querySelectorAll('#course-bank .course').forEach(c => {
+      const prereqs = JSON.parse(c.dataset.prerequisites);
+      const allMet = prereqs.every(req => approvedCourses.has(req));
+      if (!allMet && prereqs.length > 0) {
+        c.classList.add('locked');
+      } else {
+        c.classList.remove('locked');
+      }
     });
   }
 
@@ -148,14 +189,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.querySelectorAll('.semester-column').forEach((col, i) => {
-      state.semesters[`semester-${i + 1}`] = Array.from(col.querySelectorAll('.course')).map(c => c.id);
+      state.semesters[`semester-${i + 1}`] = Array.from(col.querySelectorAll('.course')).map(c => {
+        return {
+          id: c.id,
+          grade: c.querySelector('.course-grade') ? c.querySelector('.course-grade').value : null
+        };
+      });
     });
+
     state.bank = Array.from(courseBank.querySelectorAll('.course')).map(c => c.id);
+
     document.querySelectorAll('.req-item').forEach(req => {
       state.requirements[req.id] = req.classList.contains('completed');
     });
 
     localStorage.setItem('mallaState', JSON.stringify(state));
+    updateCourseLockStates();
   }
 
   function loadState() {
@@ -176,9 +225,28 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.keys(state.semesters).forEach((semKey, i) => {
       const col = document.querySelector(`[data-semester="${i + 1}"]`);
       if (col) {
-        state.semesters[semKey].forEach(id => {
-          const el = allCourses.get(id);
-          if (el) col.appendChild(el);
+        state.semesters[semKey].forEach(courseObj => {
+          const el = allCourses.get(courseObj.id);
+          if (el) {
+            col.appendChild(el);
+            el.classList.add('approved');
+
+            let gradeInput = el.querySelector('.course-grade');
+            if (!gradeInput) {
+              gradeInput = document.createElement('input');
+              gradeInput.type = 'number';
+              gradeInput.min = 1;
+              gradeInput.max = 7;
+              gradeInput.step = 0.1;
+              gradeInput.placeholder = 'Nota';
+              gradeInput.classList.add('course-grade');
+
+              gradeInput.addEventListener('change', () => saveState());
+
+              el.appendChild(gradeInput);
+            }
+            if (courseObj.grade) gradeInput.value = courseObj.grade;
+          }
         });
       }
     });
@@ -189,8 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     enableDragAndDrop();
+    updateCourseLockStates();
   }
-
-  loadState();
 
 });
