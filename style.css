@@ -5,7 +5,7 @@
     --color-header: #003366;
     --color-text: #333333;
     --color-available: #b3d9ff;
-    --color-approved: #3385ff;
+    --color-approved: #3E517A;
     --color-approved-text: #ffffff;
     --color-locked: #e0e0e0;
     --color-locked-text: #888888;
@@ -163,9 +163,10 @@ p {
     font-size: 0.9em;
     padding: 2px 4px;
     border: none;
-    border-bottom: 1px solid var(--color-header);
+    border-bottom: none;
     background-color: transparent;
     color: var(--color-text);
+    font-style: italic;
     text-align: center;
     outline: none;
     transition: border-color 0.3s;
