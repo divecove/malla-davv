@@ -141,14 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
         courseEl.draggable = true;
         courseEl.dataset.code = course.code;
         courseEl.dataset.prerequisites = JSON.stringify(course.prerequisites);
+        // ▼▼ ESTRUCTURA HTML MODIFICADA ▼▼
         courseEl.innerHTML = `
-            <div class="course-grade-wrapper"></div>
-            <div class="course-info">
+            <div class="course-details">
                 <span class="course-code">${course.code}</span>
                 <span class="course-name">${course.name}</span>
                 <span class="course-credits">${course.credits} créditos</span>
             </div>
+            <div class="course-grade-wrapper"></div>
         `;
+        // ▲▲ FIN DE LA MODIFICACIÓN ▲▲
         courseEl.addEventListener('click', (e) => {
             if (e.target.tagName === 'INPUT') return;
             courseEl.classList.toggle('approved');
@@ -278,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         Object.entries(state.requirements).forEach(([id, completed]) => {
             const el = document.getElementById(id);
-            if (el) el.classList.toggle('completed', completed);
+if (el) el.classList.toggle('completed', completed);
         });
     }
 
