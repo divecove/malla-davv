@@ -2,37 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Curricular Interactiva</title>
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Interact.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/index.min.js"></script>
 </head>
 <body>
-  <h1>Malla Curricular Interactiva</h1>
-  <button id="reset">Borrar malla guardada</button>
+  <header>
+    <h1>Malla Curricular Interactiva</h1>
+  </header>
 
-  <div id="container">
-    <div id="cursos"></div>
+  <main class="main-container">
+    <aside class="courses-sidebar">
+      <div class="course-bank-container">
+        <h2>Banco de Cursos</h2>
+        <p>Arrastra un curso a un semestre para marcarlo como aprobado.</p>
+        <div id="course-bank"></div>
+      </div>
 
-    <div id="malla">
-      <div class="semestre dropzone" data-semestre="1"><h3>Semestre 1</h3></div>
-      <div class="semestre dropzone" data-semestre="2"><h3>Semestre 2</h3></div>
-      <div class="semestre dropzone" data-semestre="3"><h3>Semestre 3</h3></div>
-      <div class="semestre dropzone" data-semestre="4"><h3>Semestre 4</h3></div>
-      <div class="semestre dropzone" data-semestre="5"><h3>Semestre 5</h3></div>
-      <div class="semestre dropzone" data-semestre="6"><h3>Semestre 6</h3></div>
-      <div class="semestre dropzone" data-semestre="7"><h3>Semestre 7</h3></div>
-      <div class="semestre dropzone" data-semestre="8"><h3>Semestre 8</h3></div>
-      <div class="semestre dropzone" data-semestre="9"><h3>Semestre 9</h3></div>
-      <div class="semestre dropzone" data-semestre="10"><h3>Semestre 10</h3></div>
-    </div>
-  </div>
+      <div class="additional-requirements-container">
+        <h2>Requisitos Adicionales</h2>
+        <div id="additional-requirements"></div>
+      </div>
+    </aside>
 
-  <!-- Script -->
+    <section class="semesters-main-content">
+      <div class="content-wrapper">
+        <div id="semesters-grid"></div>
+      </div>
+    </section>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
