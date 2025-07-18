@@ -1,165 +1,196 @@
-const cursos = [
-  {codigo: "MinArtes", nombre: "Mínimo de Artes", creditos: 10, prereq: []},
-  {codigo: "MinLetras", nombre: "Mínimo de Letras", creditos: 10, prereq: []},
-  {codigo: "IHI0205", nombre: "Historia Mundial Contemporanea", creditos: 10, prereq: []},
-  {codigo: "MinFilo", nombre: "Mínimo de Filosofía", creditos: 10, prereq: []},
-  {codigo: "MAT0100", nombre: "Razonamiento Cuantitativo", creditos: 10, prereq: []},
-  {codigo: "VRA0901", nombre: "Taller de Iniciación", creditos: 5, prereq: []},
-  {codigo: "COM101", nombre: "Test de Actualidad I A", creditos: 0, prereq: []},
-  {codigo: "EST210A", nombre: "Fundamentos de la Estética", creditos: 10, prereq: []},
-  {codigo: "FIL217H", nombre: "Verdad y Belleza", creditos: 10, prereq: []},
-  {codigo: "COM110", nombre: "Teoría de la Comunicación", creditos: 10, prereq: []},
-  {codigo: "COM113", nombre: "Tecnologías de la Comunicación", creditos: 10, prereq: []},
-  {codigo: "COM102", nombre: "Test de Actualidad I B", creditos: 0, prereq: []},
-  {codigo: "COM122", nombre: "Narración de Ficción", creditos: 10, prereq: []},
-  {codigo: "COM115", nombre: "Lenguaje Visual", creditos: 10, prereq: []},
-  {codigo: "COM109", nombre: "Historia de la Comunicación Social", creditos: 10, prereq: []},
-  {codigo: "MH", nombre: "Curso Área de Habilidades Comunicativas Orales", creditos: 10, prereq: []},
-  {codigo: "OR", nombre: "Teológico", creditos: 10, prereq: []},
-  {codigo: "COM103", nombre: "Test de Actualidad II A", creditos: 0, prereq: []},
-  {codigo: "MR", nombre: "Metodologías de la Investigación Social", creditos: 10, prereq: []},
-  {codigo: "COM705", nombre: "Espectáculo Audiovisual", creditos: 10, prereq: []},
-  {codigo: "COM706", nombre: "Herramientas de Gestión Audiovisual", creditos: 10, prereq: []},
-  {codigo: "COM120", nombre: "Narración de No Ficción", creditos: 10, prereq: []},
-  {codigo: "FIL183", nombre: "¿Filosofía Para Qué?", creditos: 10, prereq: []},
-  {codigo: "COM104", nombre: "Test de Actualidad II B", creditos: 0, prereq: []},
-  {codigo: "COM100", nombre: "Desafíos de la Comunicación", creditos: 10, prereq: []},
-  {codigo: "COM718", nombre: "Taller de Lenguaje Audiovisual", creditos: 10, prereq: ["COM115"]},
-  {codigo: "COM708", nombre: "Fundamentos Dramáticos de lo Audiovisual", creditos: 10, prereq: ["COM705"]},
-  {codigo: "COM116", nombre: "Audiencias", creditos: 10, prereq: []},
-  {codigo: "COM3500", nombre: "Economía de las Comunicaciones", creditos: 10, prereq: []},
-  {codigo: "COM105", nombre: "Test de Actualidad III A", creditos: 0, prereq: []},
-  {codigo: "COM704", nombre: "Seminario de Cine", creditos: 10, prereq: ["COM110","COM115"]},
-  {codigo: "COM719", nombre: "Taller de Realización Audiovisual", creditos: 10, prereq: ["COM718"]},
-  {codigo: "COM177", nombre: "Narración Interactiva", creditos: 10, prereq: []},
-  {codigo: "COM121", nombre: "Semiología", creditos: 10, prereq: []},
-  {codigo: "COM709", nombre: "Generación y Desarrollo de Proyectos Audiovisual", creditos: 10, prereq: ["COM706","COM790"]},
-  {codigo: "COM106", nombre: "Test de Actualidad III B", creditos: 0, prereq: []},
-  {codigo: "COM711", nombre: "Seminario de Televisión", creditos: 10, prereq: ["COM115"]},
-  {codigo: "COM710", nombre: "Taller de Televisión", creditos: 10, prereq: ["COM719"]},
-  {codigo: "COM720", nombre: "Seminario de Documental", creditos: 10, prereq: []},
-  {codigo: "COM712", nombre: "Géneros y Formatos del Guión Audiovisual", creditos: 10, prereq: ["COM705"]},
-  {codigo: "COM1000", nombre: "Práctica Interna", creditos: 0, prereq: []},
-  {codigo: "COM713", nombre: "Taller de Documental", creditos: 10, prereq: ["COM719"]},
-  {codigo: "DEL307", nombre: "Derecho de la Comunicación", creditos: 10, prereq: []},
-  {codigo: "COM200", nombre: "Éticas de las Comunicaciones", creditos: 10, prereq: ["FIL183"]},
-  {codigo: "COM714", nombre: "Seminario de Nuevas Tendencias", creditos: 10, prereq: []},
-  {codigo: "COM716", nombre: "Taller de Ficción", creditos: 10, prereq: ["COM719"]},
-  {codigo: "COM715", nombre: "Escritura del Relato Audiovisual", creditos: 10, prereq: ["COM708"]},
-  {codigo: "Optativo1", nombre: "Optativo de Profundización 1", creditos: 10, prereq: []},
-  {codigo: "COM790", nombre: "Práctica Profesional I", creditos: 0, prereq: []},
-  {codigo: "COM3500B", nombre: "Economía de las Comunicaciones (2)", creditos: 10, prereq: []},
-  {codigo: "COM721", nombre: "Taller Avanzado de Realización Audiovisual", creditos: 10, prereq: ["COM710","COM713","COM716"]},
-  {codigo: "COM3504", nombre: "Industria Audiovisual", creditos: 10, prereq: ["COM709"]},
-  {codigo: "Optativo2", nombre: "Optativo de Profundización 2", creditos: 10, prereq: []},
-  {codigo: "Optativo3", nombre: "Optativo de Profundización 3", creditos: 10, prereq: []},
-  {codigo: "COM791", nombre: "Práctica Profesional II", creditos: 0, prereq: []}
-];
+document.addEventListener('DOMContentLoaded', () => {
 
-const cursosDiv = document.getElementById('cursos');
+  const courseBank = document.getElementById('course-bank');
+  const semestersGrid = document.getElementById('semesters-grid');
+  const additionalReqsContainer = document.getElementById('additional-requirements');
 
-function renderCursos() {
-  cursosDiv.innerHTML = "";
-  cursos.forEach(curso => {
-    const div = document.createElement('div');
-    div.classList.add('curso');
-    div.textContent = `${curso.codigo} ${curso.nombre}`;
-    div.setAttribute('data-curso', curso.codigo);
-    if (curso.prereq.length > 0 && !curso.aprobado) div.classList.add('locked');
-    if (curso.aprobado) div.classList.add('completed');
-    cursosDiv.appendChild(div);
+  const courseData = [
+    { code: 'ART-MIN', name: 'Mínimo de Artes', credits: 10, prerequisites: [] },
+    { code: 'LET-MIN', name: 'Mínimo de Letras', credits: 10, prerequisites: [] },
+    { code: 'IHI0205', name: 'Historia Mundial Contemporánea', credits: 10, prerequisites: [] },
+    { code: 'FIL-MIN', name: 'Mínimo de Filosofía', credits: 10, prerequisites: [] },
+    { code: 'MAT0100', name: 'Razonamiento Cuantitativo', credits: 10, prerequisites: [] },
+    { code: 'VRA0901', name: 'Taller de Iniciación', credits: 5, prerequisites: [] },
+    { code: 'COM101', name: 'Test de Actualidad I A', credits: 0, prerequisites: [] },
+    { code: 'EST210A', name: 'Fundamentos de la Estética', credits: 10, prerequisites: [] },
+    { code: 'FIL217H', name: 'Verdad y Belleza', credits: 10, prerequisites: [] },
+    { code: 'COM110', name: 'Teoría de la Comunicación', credits: 10, prerequisites: [] },
+    { code: 'COM113', name: 'Tecnologías de la Comunicación', credits: 10, prerequisites: [] },
+    { code: 'COM102', name: 'Test de Actualidad I B', credits: 0, prerequisites: [] },
+    { code: 'COM122', name: 'Narración de Ficción', credits: 10, prerequisites: [] },
+    { code: 'COM115', name: 'Lenguaje Visual', credits: 10, prerequisites: [] },
+    { code: 'COM109', name: 'Historia de la Comunicación Social', credits: 10, prerequisites: [] },
+    { code: 'MH', name: 'Curso Área de Habilidades Comunicativas Orales', credits: 10, prerequisites: [] },
+    { code: 'OR-TEO', name: 'Teológico', credits: 10, prerequisites: [] },
+    { code: 'COM103', name: 'Test de Actualidad II A', credits: 0, prerequisites: [] },
+    { code: 'MR', name: 'Metodologías de la Investigación Social', credits: 10, prerequisites: [] },
+    { code: 'COM705', name: 'Espectáculo Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM706', name: 'Herramientas de Gestión Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM120', name: 'Narración de No Ficción', credits: 10, prerequisites: [] },
+    { code: 'FIL183', name: '¿Filosofía Para Qué?', credits: 10, prerequisites: [] },
+    { code: 'COM104', name: 'Test de Actualidad II B', credits: 0, prerequisites: [] },
+    { code: 'COM100', name: 'Desafíos de la Comunicación', credits: 10, prerequisites: [] },
+    { code: 'COM718', name: 'Taller de Lenguaje Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM708', name: 'Fundamentos Dramáticos de lo Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM116', name: 'Audiencias', credits: 10, prerequisites: [] },
+    { code: 'COM3500', name: 'Economía de las Comunicaciones', credits: 10, prerequisites: [] },
+    { code: 'COM105', name: 'Test de Actualidad III A', credits: 0, prerequisites: [] },
+    { code: 'COM704', name: 'Seminario de Cine', credits: 10, prerequisites: [] },
+    { code: 'COM719', name: 'Taller de Realización Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM177', name: 'Narración Interactiva', credits: 10, prerequisites: [] },
+    { code: 'COM121', name: 'Semiología', credits: 10, prerequisites: [] },
+    { code: 'COM709', name: 'Generación y Desarrollo de Proyectos Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM106', name: 'Test de Actualidad III B', credits: 0, prerequisites: [] },
+    { code: 'COM711', name: 'Seminario de Televisión', credits: 10, prerequisites: [] },
+    { code: 'COM710', name: 'Taller de Televisión', credits: 10, prerequisites: [] },
+    { code: 'COM720', name: 'Seminario de Documental', credits: 10, prerequisites: [] },
+    { code: 'COM712', name: 'Géneros y Formatos del Guión Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM1000', name: 'Práctica Interna (20 hrs.)', credits: 0, prerequisites: [] },
+    { code: 'COM713', name: 'Taller de Documental', credits: 10, prerequisites: [] },
+    { code: 'DEL307', name: 'Derecho de la Comunicación', credits: 10, prerequisites: [] },
+    { code: 'COM200', name: 'Éticas de las Comunicaciones', credits: 10, prerequisites: [] },
+    { code: 'COM714', name: 'Seminario de Nuevas Tendencias', credits: 10, prerequisites: [] },
+    { code: 'COM716', name: 'Taller de Ficción', credits: 10, prerequisites: [] },
+    { code: 'COM715', name: 'Escritura del Relato Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'OPT-PROF1', name: 'Optativo de Profundización 1', credits: 10, prerequisites: [] },
+    { code: 'COM790', name: 'Práctica Profesional I', credits: 0, prerequisites: [] },
+    { code: 'COM721', name: 'Taller Avanzado de Realización Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'COM3504', name: 'Industria Audiovisual', credits: 10, prerequisites: [] },
+    { code: 'OPT-PROF2', name: 'Optativo de Profundización 2', credits: 10, prerequisites: [] },
+    { code: 'OPT-PROF3', name: 'Optativo de Profundización 3', credits: 10, prerequisites: [] },
+    { code: 'COM791', name: 'Práctica Profesional II', credits: 0, prerequisites: [] },
+  ];
+
+  const additionalReqsData = [
+    { id: 'req-com-escrita', name: 'Examen de Comunicación Escrita (VRA100C)' },
+    { id: 'req-english', name: 'English Test Alte 2 (VRA2000)' },
+    { id: 'req-iniciacion', name: 'Taller de Iniciación Aprobado' }
+  ];
+
+  for (let i = 1; i <= 10; i++) {
+    const semesterCol = document.createElement('div');
+    semesterCol.classList.add('semester-column');
+    semesterCol.dataset.semester = i;
+    semesterCol.innerHTML = `<h3>Semestre ${i}</h3>`;
+    semestersGrid.appendChild(semesterCol);
+  }
+
+  courseData.forEach(course => {
+    const courseEl = document.createElement('div');
+    courseEl.className = 'course';
+    courseEl.id = course.code;
+    courseEl.draggable = true;
+    courseEl.dataset.code = course.code;
+    courseEl.dataset.prerequisites = JSON.stringify(course.prerequisites);
+    courseEl.innerHTML = `
+      <span class="course-code">${course.code}</span>
+      <span class="course-name">${course.name}</span>
+      <span class="course-credits">${course.credits} créditos</span>
+    `;
+    courseBank.appendChild(courseEl);
   });
-  initInteract();
-}
 
-function initInteract() {
-  interact('.curso').draggable({
-    inertia: true,
-    autoScroll: true,
-    listeners: {
-      move (event) {
-        const target = event.target;
-        if (target.classList.contains('locked')) return;
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-        target.style.transform = `translate(${x}px, ${y}px)`;
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-      },
-      end (event) {
-        if (!event.target.parentElement.classList.contains('dropzone')) {
-          event.target.style.transform = 'none';
-          event.target.removeAttribute('data-x');
-          event.target.removeAttribute('data-y');
+  additionalReqsData.forEach(req => {
+    const reqEl = document.createElement('div');
+    reqEl.classList.add('req-item');
+    reqEl.id = req.id;
+    reqEl.textContent = req.name;
+    reqEl.addEventListener('click', () => {
+      reqEl.classList.toggle('completed');
+      saveState();
+    });
+    additionalReqsContainer.appendChild(reqEl);
+  });
+
+  enableDragAndDrop();
+
+  function enableDragAndDrop() {
+    const courses = document.querySelectorAll('.course');
+    const dropzones = [...document.querySelectorAll('.semester-column'), courseBank];
+
+    courses.forEach(course => {
+      course.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', course.id);
+        setTimeout(() => { course.style.opacity = '0.5'; }, 0);
+      });
+      course.addEventListener('dragend', () => {
+        course.style.opacity = '1';
+      });
+    });
+
+    dropzones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+      });
+      zone.addEventListener('dragleave', () => {
+        zone.classList.remove('drag-over');
+      });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const courseId = e.dataTransfer.getData('text/plain');
+        const courseEl = document.getElementById(courseId);
+        if (courseEl) {
+          zone.appendChild(courseEl);
+          courseEl.classList.toggle('approved', zone.classList.contains('semester-column'));
+          saveState();
         }
-      }
-    }
-  });
-
-  interact('.dropzone').dropzone({
-    accept: '.curso:not(.locked)',
-    overlap: 0.75,
-    ondrop: function (event) {
-      event.target.appendChild(event.relatedTarget);
-      event.relatedTarget.style.transform = "none";
-      event.relatedTarget.removeAttribute('data-x');
-      event.relatedTarget.removeAttribute('data-y');
-
-      const codigo = event.relatedTarget.getAttribute('data-curso');
-      const curso = cursos.find(c => c.codigo === codigo);
-      if (curso) curso.aprobado = true;
-
-      event.relatedTarget.classList.add('completed');
-      event.relatedTarget.classList.remove('locked');
-
-      saveMalla();
-    }
-  });
-}
-
-function saveMalla() {
-  const malla = {};
-
-  document.querySelectorAll('.dropzone').forEach(drop => {
-    const semestre = drop.dataset.semestre;
-    malla[semestre] = [];
-    drop.querySelectorAll('.curso').forEach(cursoDiv => {
-      malla[semestre].push(cursoDiv.getAttribute('data-curso'));
+      });
     });
-  });
+  }
 
-  localStorage.setItem('malla', JSON.stringify(malla));
-}
+  function saveState() {
+    const state = {
+      semesters: {},
+      bank: [],
+      requirements: {}
+    };
 
-function loadMalla() {
-  const data = localStorage.getItem('malla');
-  if (!data) return;
-  const malla = JSON.parse(data);
+    document.querySelectorAll('.semester-column').forEach((col, i) => {
+      state.semesters[`semester-${i + 1}`] = Array.from(col.querySelectorAll('.course')).map(c => c.id);
+    });
+    state.bank = Array.from(courseBank.querySelectorAll('.course')).map(c => c.id);
+    document.querySelectorAll('.req-item').forEach(req => {
+      state.requirements[req.id] = req.classList.contains('completed');
+    });
 
-  document.querySelectorAll('.dropzone').forEach(dz => dz.innerHTML = `<h3>Semestre ${dz.dataset.semestre}</h3>`);
+    localStorage.setItem('mallaState', JSON.stringify(state));
+  }
 
-  Object.keys(malla).forEach(semestre => {
-    const dropzone = document.querySelector(`.dropzone[data-semestre="${semestre}"]`);
-    malla[semestre].forEach(codigo => {
-      const cursoDiv = document.querySelector(`.curso[data-curso="${codigo}"]`);
-      if (cursoDiv) {
-        dropzone.appendChild(cursoDiv);
-        cursoDiv.classList.add('completed');
-        cursoDiv.classList.remove('locked');
-        cursoDiv.style.transform = "none";
-        cursoDiv.removeAttribute('data-x');
-        cursoDiv.removeAttribute('data-y');
+  function loadState() {
+    const state = JSON.parse(localStorage.getItem('mallaState'));
+    if (!state) return;
+
+    const allCourses = new Map();
+    document.querySelectorAll('.course').forEach(c => allCourses.set(c.id, c));
+
+    document.querySelectorAll('.semester-column').forEach(col => col.innerHTML = `<h3>${col.querySelector('h3').textContent}</h3>`);
+    courseBank.innerHTML = '';
+
+    state.bank.forEach(id => {
+      const el = allCourses.get(id);
+      if (el) courseBank.appendChild(el);
+    });
+
+    Object.keys(state.semesters).forEach((semKey, i) => {
+      const col = document.querySelector(`[data-semester="${i + 1}"]`);
+      if (col) {
+        state.semesters[semKey].forEach(id => {
+          const el = allCourses.get(id);
+          if (el) col.appendChild(el);
+        });
       }
     });
-  });
-}
 
-document.getElementById('reset').addEventListener('click', () => {
-  localStorage.removeItem('malla');
-  location.reload();
+    Object.entries(state.requirements).forEach(([id, completed]) => {
+      const el = document.getElementById(id);
+      if (el && completed) el.classList.add('completed');
+    });
+
+    enableDragAndDrop();
+  }
+
+  loadState();
+
 });
-
-window.onload = () => {
-  renderCursos();
-  loadMalla();
-};
