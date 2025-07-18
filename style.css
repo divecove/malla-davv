@@ -1,13 +1,13 @@
 /* --- General Styles & Color Palette --- */
 :root {
-    --color-bg: #f0f8ff; /* AliceBlue - Fondo general */
+    --color-bg: #f0f8ff;
     --color-container-bg: #ffffff;
-    --color-header: #003366; /* Azul oscuro para títulos */
+    --color-header: #003366;
     --color-text: #333333;
-    --color-available: #b3d9ff; /* Celeste para cursos disponibles */
-    --color-approved: #989FCE; /* Azul más oscuro para cursos aprobados */
+    --color-available: #b3d9ff;
+    --color-approved: #3385ff;
     --color-approved-text: #ffffff;
-    --color-locked: #e0e0e0; /* Gris para cursos bloqueados */
+    --color-locked: #e0e0e0;
     --color-locked-text: #888888;
     --color-semester-border: #cce6ff;
     --color-drag-over: #a3c2e0;
@@ -46,33 +46,16 @@ p {
 }
 
 .courses-sidebar {
-    flex: 0 0 280px; /* Ancho fijo para la columna lateral de cursos */
+    flex: 0 0 280px;
     position: sticky;
     top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espacio entre los contenedores de la barra lateral */
+    gap: 20px;
 }
 
 .semesters-main-content {
-    flex: 1; /* Ocupa el espacio restante */
-}
-
-/* --- Columna de Cursos --- */
-.course-bank-container {
-    padding: 20px;
-    background-color: var(--color-container-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-#course-bank {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 50vh; /* Ajustado para dar espacio a otros elementos */
-    overflow-y: auto;
-    padding: 5px;
+    flex: 1;
 }
 
 /* --- Estilos de Curso Individual --- */
@@ -83,18 +66,17 @@ p {
     transition: background-color 0.3s, color 0.3s, box-shadow 0.2s;
     width: auto;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-color: var(--color-available); /* Color celeste por defecto */
+    background-color: var(--color-available);
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
 }
 
 .course:active { cursor: grabbing; }
 
-.course-info {
-    flex-basis: 70%;
-}
+.course-info { flex-basis: 70%; }
+.course-grade-wrapper { flex-basis: 25%; text-align: center; }
 .course-code { font-weight: bold; font-size: 0.9em; display: block; }
 .course-name { font-size: 0.85em; margin: 4px 0; display: block; }
 .course-credits { font-size: 0.8em; font-style: italic; display: block; text-align: left; }
@@ -106,18 +88,16 @@ p {
     cursor: not-allowed;
     pointer-events: none;
 }
+.course.locked .course-info { pointer-events: auto; }
 .course.approved {
     background-color: var(--color-approved);
     color: var(--color-approved-text);
 }
-
 .course.approved .course-grade {
     color: var(--color-approved-text);
     border-bottom-color: var(--color-approved-text);
 }
-.course.approved .course-grade::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
+.course.approved .course-grade::placeholder { color: rgba(255, 255, 255, 0.7); }
 
 /* --- Grilla de Semestres --- */
 #semesters-grid {
@@ -134,12 +114,10 @@ p {
     border: 2px dashed var(--color-semester-border);
     transition: background-color 0.3s, border-color 0.3s;
 }
-
 .semester-column.drag-over {
     background-color: var(--color-drag-over);
     border-color: var(--color-header);
 }
-
 .semester-column h3 { margin-top: 0; font-size: 1em; padding-bottom: 10px; border-bottom: 1px solid var(--color-semester-border); }
 .semester-column .course { margin-bottom: 10px; }
 
@@ -150,13 +128,7 @@ p {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-
-#additional-requirements {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
+#additional-requirements { display: flex; flex-direction: column; gap: 10px; }
 .req-item {
     padding: 12px 20px;
     border-radius: 8px;
@@ -167,54 +139,41 @@ p {
     transition: background-color 0.3s, color 0.3s;
     text-align: center;
 }
-
 .req-item.completed {
     background-color: var(--color-approved);
     color: var(--color-approved-text);
 }
 
 /* --- Input de nota --- */
-.course-grade-wrapper {
-    flex-basis: 30%;
-    text-align: left;
-}
 .course-grade {
     width: 60px;
     font-family: inherit;
     font-size: 0.9em;
     padding: 2px 4px;
     border: none;
-    border-bottom: none;
+    border-bottom: 1px solid var(--color-header);
     background-color: transparent;
     color: var(--color-text);
     text-align: center;
     outline: none;
     transition: border-color 0.3s;
-    -moz-appearance: textfield; /* Para Firefox */
+    -moz-appearance: textfield;
 }
-.course-grade::placeholder {
-    color: #999;
-    font-style: italic;
-    font-size: 0.9em;
-}
-.course-grade:focus {
-    border-bottom: 1px solid var(--color-approved);
-}
+.course-grade::placeholder { color: #999; font-style: italic; font-size: 0.9em; }
+.course-grade:focus { border-bottom: 1px solid var(--color-approved); }
 .course-grade::-webkit-outer-spin-button,
 .course-grade::-webkit-inner-spin-button {
-  -webkit-appearance: none; /* Para Chrome, Safari, Edge */
+  -webkit-appearance: none;
   margin: 0;
 }
 
-
-/* --- ▼ NUEVO BLOQUE DE ESTILOS ▼ --- */
+/* --- Contenedor de Resumen Académico --- */
 .summary-container {
     padding: 20px;
     background-color: var(--color-container-bg);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-
 #summary-output p {
     display: flex;
     justify-content: space-between;
@@ -223,9 +182,7 @@ p {
     text-align: left;
     margin: 10px 0;
 }
-
 #summary-output strong {
     color: var(--color-header);
     font-size: 1.1em;
 }
-/* --- ▲ FIN NUEVO BLOQUE DE ESTILOS ▲ --- */
