@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     semestersGrid.appendChild(semesterCol);
   }
 
+  // Genera cursos en el banco
   courseData.forEach(course => {
     const courseEl = document.createElement('div');
     courseEl.className = 'course';
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     courseBank.appendChild(courseEl);
   });
 
+  // Genera requisitos adicionales
   additionalReqsData.forEach(req => {
     const reqEl = document.createElement('div');
     reqEl.classList.add('req-item');
@@ -144,11 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
             gradeInput.min = 1;
             gradeInput.max = 7;
             gradeInput.step = 0.1;
-            gradeInput.placeholder = 'Nota';
+            gradeInput.placeholder = 'Nota final';
             gradeInput.classList.add('course-grade');
-
             gradeInput.addEventListener('change', () => saveState());
-
             courseEl.appendChild(gradeInput);
           }
 
@@ -219,7 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     state.bank.forEach(id => {
       const el = allCourses.get(id);
-      if (el) courseBank.appendChild(el);
+      if (el) {
+        el.classList.remove('approved');
+        const existingInput = el.querySelector('.course-grade');
+        if (existingInput) existingInput.remove();
+        courseBank.appendChild(el);
+      }
     });
 
     Object.keys(state.semesters).forEach((semKey, i) => {
@@ -231,19 +236,22 @@ document.addEventListener('DOMContentLoaded', () => {
             col.appendChild(el);
             el.classList.add('approved');
 
-            if (isApproved && !courseEl.querySelector('.course-grade')) {
-  const gradeInput = document.createElement('input');
-  gradeInput.type = 'number';
-  gradeInput.min = 1;
-  gradeInput.max = 7;
-  gradeInput.step = 0.1;
-  gradeInput.placeholder = 'Nota final';
-  gradeInput.classList.add('course-grade');
-
-  gradeInput.addEventListener('change', () => saveState());
-
-  courseEl.appendChild(gradeInput);
-}
+            if (!el.querySelector('.course-grade')) {
+              const gradeInput = document.createElement('input');
+              gradeInput.type = 'number';
+              gradeInput.min = 1;
+              gradeInput.max = 7;
+              gradeInput.step = 0.1;
+              gradeInput.placeholder = 'Nota final';
+              gradeInput.classList.add('course-grade');
+              gradeInput.value = courseObj.grade || '';
+              gradeInput.addEventListener('change', () => saveState());
+              el.appendChild(gradeInput);
+            }
+          }
+        });
+      }
+    });
 
     Object.entries(state.requirements).forEach(([id, completed]) => {
       const el = document.getElementById(id);
