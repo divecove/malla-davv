@@ -165,19 +165,26 @@ p {
     color: var(--color-approved-text);
 }
 
+/* --- Estilo de inputs de nota integrados --- */
 .course-grade {
-  width: 100%;
-  font-size: 0.8em;
-  margin-top: 6px;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.2s;
+    width: 45px;
+    font-family: inherit;
+    font-size: 0.85em;
+    padding: 2px 4px;
+    border: none;
+    border-bottom: 1px solid var(--color-header);
+    background-color: transparent;
+    color: var(--color-text);
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.course-grade::placeholder {
+    color: #aaa;
+    font-style: italic;
 }
 
 .course-grade:focus {
-  border-color: var(--color-header);
-  box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
-  outline: none;
+    border-bottom: 1px solid var(--color-approved);
 }
