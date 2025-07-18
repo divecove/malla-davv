@@ -231,25 +231,19 @@ document.addEventListener('DOMContentLoaded', () => {
             col.appendChild(el);
             el.classList.add('approved');
 
-            let gradeInput = el.querySelector('.course-grade');
-            if (!gradeInput) {
-              gradeInput = document.createElement('input');
-              gradeInput.type = 'number';
-              gradeInput.min = 1;
-              gradeInput.max = 7;
-              gradeInput.step = 0.1;
-              gradeInput.placeholder = 'Nota';
-              gradeInput.classList.add('course-grade');
+            if (isApproved && !courseEl.querySelector('.course-grade')) {
+  const gradeInput = document.createElement('input');
+  gradeInput.type = 'number';
+  gradeInput.min = 1;
+  gradeInput.max = 7;
+  gradeInput.step = 0.1;
+  gradeInput.placeholder = 'Nota final';
+  gradeInput.classList.add('course-grade');
 
-              gradeInput.addEventListener('change', () => saveState());
+  gradeInput.addEventListener('change', () => saveState());
 
-              el.appendChild(gradeInput);
-            }
-            if (courseObj.grade) gradeInput.value = courseObj.grade;
-          }
-        });
-      }
-    });
+  courseEl.appendChild(gradeInput);
+}
 
     Object.entries(state.requirements).forEach(([id, completed]) => {
       const el = document.getElementById(id);
