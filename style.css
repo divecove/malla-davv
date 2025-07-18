@@ -61,18 +61,21 @@ p {
 /* --- Estilos de Curso Individual --- */
 /* ▼▼ REGLAS MODIFICADAS ▼▼ */
 .course {
-    position: relative; /* Necesario para posicionar la nota de forma absoluta */
-    padding: 10px;
-    min-height: 65px; /* Asegura altura suficiente para el contenido */
+    display: flex;
+    flex-direction: column; /* cambia de fila a columna */
+    align-items: flex-start; /* alinea textos a la izquierda */
+    justify-content: space-between; /* distribuye texto arriba y nota abajo */
+    position: relative; /* permite posicionar la nota en esquina inferior derecha */
+    padding: 10px 15px;
     border-radius: 8px;
     cursor: grab;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.2s;
+    width: auto;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: var(--color-available);
 }
-
-.course-details {
-    padding-right: 70px; /* Deja espacio a la derecha para que la nota no se superponga */
+.course-info {
+    padding-right: 70px; /* deja espacio para la nota */
 }
 /* ▲▲ FIN DE REGLAS MODIFICADAS ▲▲ */
 
@@ -149,8 +152,9 @@ p {
 /* ▼▼ REGLAS MODIFICADAS ▼▼ */
 .course-grade-wrapper {
     position: absolute;
-    bottom: 8px;
+    bottom: 5px;
     right: 10px;
+    text-align: right;
 }
 
 .course-grade {
