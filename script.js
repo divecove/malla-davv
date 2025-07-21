@@ -105,7 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initializeUI() {
-        for (let i = 1; i <= 10; i++) {
+        // ▼▼ LÍNEA MODIFICADA ▼▼
+        for (let i = 1; i <= 11; i++) {
+        // ▲▲ FIN DE LA MODIFICACIÓN ▲▲
             const semesterCol = document.createElement('div');
             semesterCol.classList.add('semester-column');
             semesterCol.dataset.semester = i;
@@ -141,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
         courseEl.draggable = true;
         courseEl.dataset.code = course.code;
         courseEl.dataset.prerequisites = JSON.stringify(course.prerequisites);
-        // ▼▼ ESTRUCTURA HTML MODIFICADA ▼▼
         courseEl.innerHTML = `
             <div class="course-details">
                 <span class="course-code">${course.code}</span>
@@ -150,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="course-grade-wrapper"></div>
         `;
-        // ▲▲ FIN DE LA MODIFICACIÓN ▲▲
         courseEl.addEventListener('click', (e) => {
             if (e.target.tagName === 'INPUT') return;
             courseEl.classList.toggle('approved');
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         Object.entries(state.requirements).forEach(([id, completed]) => {
             const el = document.getElementById(id);
-if (el) el.classList.toggle('completed', completed);
+            if (el) el.classList.toggle('completed', completed);
         });
     }
 
